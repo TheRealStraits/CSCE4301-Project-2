@@ -220,12 +220,19 @@ void TIM1_CC_IRQHandler(void)
 extern uint8_t commandIn;
 extern uint8_t lastCommand;
 extern int trig;
+extern unsigned char speed;
+uint8_t data;
 
 void USART1_IRQHandler(void)
 {
   /* USER CODE BEGIN USART1_IRQn 0 */
-	HAL_UART_Receive_IT(&huart1, &commandIn, sizeof(commandIn));
+	HAL_UART_Receive_IT(&huart1, &data, sizeof(commandIn));
+	if (data == lastCommand && data == (uint8_t)0x66)
+		speed = speed + 0x05;
+	else
+		speed = 0x30;
 	trig = 1;
+	commandIn = data;
 	lastCommand = commandIn;
 	HAL_UART_Transmit_IT(&huart1, &commandIn, sizeof(commandIn));
 	//__HAL_UART_DISABLE_IT(&huart1,UART_IT_RXNE);

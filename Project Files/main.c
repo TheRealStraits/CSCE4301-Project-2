@@ -76,16 +76,13 @@ unsigned char rightMotorF = 0xC1;
 unsigned char leftMotorF = 0xC9;
 unsigned char rightMotorB = 0xC2;
 unsigned char leftMotorB = 0xCA;
-unsigned char speed = 0x20;
-unsigned char speed1 = 0x30;
-unsigned char speed2 = 0x40;
-unsigned char speed3 = 0x50;
-unsigned char speed4 = 0x60;
-unsigned char speed5 = 0x70;
+unsigned char speed = 0x30;
 unsigned char speedHalf = 0x20;
 unsigned char stop = 0x00;
 int trig = 1;
 uint8_t lastCommand;
+
+//Speed Settloer
 
 
 void microDelay(int sec)
@@ -193,16 +190,6 @@ int main(void)
 		
 		__HAL_TIM_ENABLE_IT(&htim1, TIM_IT_CC1);
 		
-//		// Speed Setter
-//		if (trig == 0 && (uint8_t)commandIn == 0x66 && (uint8_t)lastCommand == 0x66)
-//		{
-//			speed = speed + 0x10;
-//		}
-//		else
-//		{
-//			speed = 0x30;
-//		}
-		
 		// Check command from user
 		if (trig == 1)
 		{
@@ -250,26 +237,6 @@ int main(void)
 				HAL_UART_Transmit(&huart2, &speed, 1,HAL_MAX_DELAY);
 				trig = 0;
 			} 
-//			else if (commandIn == 0x01)
-//			{
-//				speed = speed1;
-//			} 
-//			else if (commandIn == 0x02)
-//			{
-//				speed = speed2;
-//			}
-//			else if (commandIn == 0x03)
-//			{
-//				speed = speed3;
-//			}
-//			else if ((uint8_t)commandIn == 0x04)
-//			{
-//				speed = speed4;
-//			}
-//			else if ((uint8_t)commandIn == 0x49)
-//			{
-//				speed = speed5;
-//			}
 		}
 		
 		if (Distance <= 20 && lastCommand != (uint8_t)0x62)
