@@ -82,9 +82,7 @@ unsigned char stop = 0x00;
 int trig = 1;
 uint8_t lastCommand;
 
-//Speed Settloer
-
-
+// Microsecond Timer
 void microDelay(int sec)
 {
 	if(sec < 2) sec = 2;
@@ -96,6 +94,7 @@ void microDelay(int sec)
 	TIM2->SR &= ~(0x0001);
 }
 
+// Input Capture function for Ultrasonic Echo Pin
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 {
 	if (htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1)  // if the interrupt source is channel1
@@ -133,7 +132,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 	}
 }
 
-// f = 0x66; s = 0x73; b = 0x62; r = 0x72; l = 0x6C;
+// f = 0x66; s = 0x73; b = 0x62; r = 0x72; l = 0x6C; u = 0x55; d = 0x64
 
 /* USER CODE END 0 */
 
@@ -170,8 +169,8 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-	HAL_TIM_IC_Start_IT(&htim1, TIM_CHANNEL_1);
-	__HAL_UART_ENABLE_IT(&huart1, UART_IT_RXNE);
+  HAL_TIM_IC_Start_IT(&htim1, TIM_CHANNEL_1);
+  __HAL_UART_ENABLE_IT(&huart1, UART_IT_RXNE);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -239,14 +238,14 @@ int main(void)
 			} 
 		}
 		
-		if (Distance <= 20 && lastCommand != (uint8_t)0x62)
+	  	// Check distance returned by sensor to issue halt 
+		if (Distance <= 30 && lastCommand != (uint8_t)0x62)
 		{
 			trig = 1;
 			commandIn = (uint8_t)0x55;
 		}
 		else
 		{
-			//trig = 1;
 			commandIn = lastCommand;
 		}
 		
@@ -256,6 +255,7 @@ int main(void)
 		//HAL_UART_Transmit(&huart2, (uint8_t *)uartBuf, strlen(uartBuf), 100);
 		
 		HAL_Delay(50);
+	  
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
