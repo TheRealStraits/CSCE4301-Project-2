@@ -226,14 +226,21 @@ uint8_t data;
 void USART1_IRQHandler(void)
 {
   /* USER CODE BEGIN USART1_IRQn 0 */
+	// Receive the input from the BT module
 	HAL_UART_Receive_IT(&huart1, &data, sizeof(commandIn));
+	// Check if the given input is the same as the last command issued
 	if (data == lastCommand && data == (uint8_t)0x66)
-		speed = speed + 0x05;
+		speed = speed + 0x05;	// Increment Speed
 	else
-		speed = 0x30;
-	trig = 1;
+		speed = 0x30; // Reset Speed
+	// Decerement speed if 'd' (Decrease) command is given 
+	if (data == lastCommand && data == (uint8_t)0x66)
+		speed = speed - 0x05;	// Decrement Speed
+	else
+		speed = 0x30; // Reset Speed
+	trig = 1;	// Indicate that new command has arrived to trigger the controller
 	commandIn = data;
-	lastCommand = commandIn;
+	lastCommand = commandIn;	// Set last command 
 	HAL_UART_Transmit_IT(&huart1, &commandIn, sizeof(commandIn));
 	//__HAL_UART_DISABLE_IT(&huart1,UART_IT_RXNE);
   /* USER CODE END USART1_IRQn 0 */
