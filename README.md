@@ -1,1 +1,1 @@
-# CSCE4301-Project-2
+# CSCE4301 Project 2
