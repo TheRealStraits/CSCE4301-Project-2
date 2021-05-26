@@ -19,7 +19,7 @@ In order to be able to run the necessary hardware, you will need to configure th
 
 ### Hardware Connections
 
-Please follow the following Diagram in order to make the necessary connections with your Thumper.
+Please follow the following Diagram in order to make the necessary connections with your Thumper. The Ultrsonic sensor requires 5V as well as the HM-10 Bluetooth Module. Make sure all components (Thumnper, Sensor, BT Module) are also connected to GND.
 
 ![Hardware Interface](https://github.com/TheRealStraits/CSCE4301-Project-2/blob/main/Diagrams/Hardware%20Interface.PNG?raw=true)
 
